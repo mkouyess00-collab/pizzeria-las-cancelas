@@ -44,6 +44,7 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .loader .n{font-family:var(--serif);font-weight:600;font-size:clamp(90px,18vw,260px);line-height:.8;letter-spacing:-.05em}
 .loader .n sup{font-size:.35em;vertical-align:top}
 .loader p{font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;max-width:16em;text-align:right}
+.loader .chef{position:absolute;left:50%;top:50%;width:clamp(120px,16vw,210px);color:var(--paper);translate:-50% -62%}
 @media(max-width:640px){.loader{padding:20px;flex-direction:column;align-items:flex-start}.loader p{text-align:left}}
 
 /* ---------- nav ---------- */
@@ -52,7 +53,8 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .nav.solid{background:rgba(30,19,13,.82);backdrop-filter:blur(12px)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px}
 .logo{font-family:var(--serif);font-weight:700;font-size:23px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
-.logo i{width:32px;height:32px;border-radius:7px;background:var(--tile);display:grid;place-items:center;font-style:normal}
+.logo .chef{width:30px;color:var(--saffron);transition:transform .4s var(--ease)}
+.logo:hover .chef{transform:rotate(-10deg) scale(1.08)}
 .nav ul{display:flex;gap:34px;list-style:none;font-size:15px;font-weight:500}
 .nav ul a{opacity:.8;transition:opacity .2s}.nav ul a:hover{opacity:1}
 .btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;transition:transform .3s var(--ease),background .25s,color .25s;white-space:nowrap;position:relative;overflow:hidden}
@@ -85,12 +87,21 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .w>span{display:inline-block}
 @media(max-width:700px){.score{right:16px;top:96px}.score b{font-size:44px}.hero .wrap{padding-bottom:110px}}
 
-/* ---------- marquee ---------- */
-.marquee{background:var(--saffron);color:var(--ink);overflow:hidden;padding:18px 0}
-.track{display:flex;width:max-content;font-family:var(--serif);font-size:clamp(26px,3.4vw,48px);font-weight:500;letter-spacing:-.02em;will-change:transform}
-.track span{display:flex;align-items:center;gap:36px;padding-right:36px;white-space:nowrap}
-.track span::after{content:"";width:.5em;height:.5em;border-radius:50%;background:var(--tomato)}
-.track span:nth-child(even){font-style:italic;font-weight:300}
+/* ---------- el cocinero de la casa (personaje del logo) ---------- */
+.chef{display:inline-block;aspect-ratio:426/528;background:currentColor;-webkit-mask:url(img/cocinero.png) center/contain no-repeat;mask:url(img/cocinero.png) center/contain no-repeat;flex:none}
+.wave{transform-origin:50% 90%;animation:wave 2.6s ease-in-out infinite}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%{transform:rotate(-8deg)}20%{transform:rotate(6deg)}30%{transform:rotate(-5deg)}40%{transform:rotate(3deg)}}
+
+/* bienvenida: franja de azulejo con el cocinero */
+.welcome{position:relative;background:var(--saffron);color:var(--ink);overflow:hidden}
+.welcome::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 8C62 30 70 38 92 50 70 62 62 70 50 92 38 70 30 62 8 50 30 38 38 30 50 8Z' fill='%23D99A2E'/%3E%3Cpath d='M0 0h18A18 18 0 0 1 0 18zM100 0v18A18 18 0 0 1 82 0zM0 100V82a18 18 0 0 1 18 18zM100 100H82a18 18 0 0 1 18-18z' fill='%23D99A2E'/%3E%3C/svg%3E") 0 0/90px 90px;opacity:.55}
+.welcome .wrap{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:40px;align-items:center;padding-top:36px;padding-bottom:36px}
+.welcome .chef{width:clamp(96px,10vw,140px);color:var(--ink)}
+.bubble{position:relative;background:var(--paper);border-radius:28px;padding:24px 30px;font-family:var(--serif);font-size:clamp(22px,2.4vw,34px);line-height:1.15;letter-spacing:-.02em;box-shadow:0 18px 40px -22px rgba(36,23,15,.5);max-width:24ch}
+.bubble::before{content:"";position:absolute;left:-14px;top:50%;width:28px;height:28px;background:var(--paper);transform:translateY(-50%) rotate(45deg);border-radius:4px}
+.bubble em{font-style:italic;color:var(--tomato)}
+.welcome .sig{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-align:right;max-width:14em}
+@media(max-width:760px){.welcome .wrap{grid-template-columns:auto 1fr;gap:22px}.welcome .sig{display:none}.welcome .chef{width:80px}.bubble{padding:18px 20px}}
 
 /* ---------- manifesto ---------- */
 .manifesto{background:var(--cream);color:var(--ink);padding:clamp(100px,14vw,200px) 0}
@@ -234,6 +245,11 @@ h2 em{font-style:italic;font-weight:300;color:var(--saffron)}
 @media(max-width:480px){.hours div{flex-direction:column;gap:2px}}
 .giant{font-family:var(--serif);font-weight:600;font-size:clamp(60px,16.5vw,270px);letter-spacing:-.06em;line-height:.85;color:#E25A3E;white-space:nowrap;text-align:center;margin-top:120px;overflow:hidden}
 .giant span{display:inline-block}
+.giant-wrap{position:relative}
+.giant-wrap .chef{position:absolute;right:4%;top:-42%;width:clamp(56px,10vw,170px);color:var(--saffron)}
+.warn{position:relative;padding-left:clamp(34px,8vw,130px)!important}
+.warn .chef{position:absolute;left:clamp(12px,2vw,26px);bottom:14px;width:clamp(56px,7.5vw,100px);color:var(--saffron)}
+@media(max-width:640px){.warn{padding-left:34px!important}.warn .chef{display:none}}
 footer.site{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:rgba(244,234,218,.65);border-top:1px solid var(--line-lt);padding-top:24px;margin-top:40px}
 footer.site a{text-decoration:underline;text-underline-offset:2px}
 
@@ -241,20 +257,21 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
 .callbar .btn{width:100%;justify-content:center;box-shadow:0 14px 30px -10px rgba(0,0,0,.6)}
 @media(max-width:640px){.callbar{display:block}.visita{padding-bottom:110px}}
 
-@media(prefers-reduced-motion:reduce){.dot{animation:none}.js .loader{display:none}.js .big-text .fw{opacity:1}}
+@media(prefers-reduced-motion:reduce){.dot,.wave{animation:none}.js .loader{display:none}.js .big-text .fw{opacity:1}}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
 <div class="loader" id="loader" aria-hidden="true">
+  <span class="chef wave" aria-hidden="true"></span>
   <div class="n"><span id="ln">0</span><sup>°C</sup></div>
   <p>Calentando el horno · Pizzería manchega desde la calle San Francisco</p>
 </div>
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="Las Cancelas, inicio"><i><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8C62 30 70 38 92 50 70 62 62 70 50 92 38 70 30 62 8 50 30 38 38 30 50 8Z" fill="#FBF5EA"/><circle cx="50" cy="50" r="12" fill="#EDB04A"/></svg></i>Las Cancelas</a>
+    <a class="logo" href="#top" aria-label="Las Cancelas, inicio"><span class="chef" aria-hidden="true"></span>Las Cancelas</a>
     <nav aria-label="Principal"><ul>
       <li><a href="#casa">La casa</a></li>
       <li><a href="#carta">Pizzas</a></li>
@@ -286,12 +303,13 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
   </div>
 </section>
 
-<div class="marquee" aria-hidden="true">
-  <div class="track" id="track">
-    <span>Don Quijote</span><span>De Corral</span><span>De Matanza</span><span>Roquefort</span><span>Serrana</span><span>Inferno</span><span>San Ardalión</span><span>Feriantina</span>
-    <span>Don Quijote</span><span>De Corral</span><span>De Matanza</span><span>Roquefort</span><span>Serrana</span><span>Inferno</span><span>San Ardalión</span><span>Feriantina</span>
+<section class="welcome" aria-label="Bienvenida">
+  <div class="wrap">
+    <span class="chef wave" id="welcomeChef" aria-hidden="true"></span>
+    <p class="bubble" id="bubble">¡Pasa, que el horno ya está a <em>300 grados</em> y la mesa puesta!</p>
+    <p class="sig">El cocinero de Las Cancelas, desde la calle San Francisco</p>
   </div>
-</div>
+</section>
 
 <!-- MANIFIESTO -->
 <section class="manifesto" id="casa">
@@ -428,6 +446,7 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
       <figure class="q" data-up><p>Comida casera, postres caseros, todo muy rico y un trato excelente.</p><footer>Reseña en Google</footer></figure>
     </div>
     <div class="warn" data-up>
+      <span class="chef" aria-hidden="true"></span>
       <p><b>Ven con tiempo</b>No se reservan mesas de menos de 10 personas y los fines de semana hay cola. Si no quieres esperar, llama y te la llevas a casa.</p>
       <a class="btn btn-tomato" href="tel:+34926545965"><iconify-icon icon="solar:phone-calling-bold"></iconify-icon>926 54 59 65</a>
     </div>
@@ -465,7 +484,7 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
         </div>
       </div>
     </div>
-    <div class="giant" id="giant" aria-hidden="true">Las Cancelas</div>
+    <div class="giant-wrap"><div class="giant" id="giant" aria-hidden="true">Las Cancelas</div><span class="chef wave" id="giantChef" aria-hidden="true"></span></div>
     <footer class="site">
       <span>© Pizzería Las Cancelas · Alcázar de San Juan, Ciudad Real</span>
       <span>Fotos del local publicadas en su ficha de Google Maps</span>
@@ -567,9 +586,12 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
   const nav=$('#nav');let last=0;
   ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{const y=s.scroll();nav.classList.toggle('solid',y>60);nav.classList.toggle('hide',y>last&&y>400);last=y;}});
 
-  /* marquee que acelera con la velocidad del scroll */
-  const track=$('#track');let x=0,dir=1;
-  gsap.ticker.add(()=>{const v=lenis?lenis.velocity:0;if(v)dir=v<0?-1:1;x-=(0.6+Math.min(Math.abs(v)*.35,14))*dir;const h=track.scrollWidth/2;if(x<=-h)x+=h;if(x>0)x-=h;track.style.transform=`translateX(${x}px)`;});
+  /* el cocinero entra saltando y su bocadillo aparece */
+  gsap.from('#welcomeChef',{yPercent:120,rotate:-25,duration:1.1,ease:'back.out(1.8)',scrollTrigger:{trigger:'.welcome',start:'top 85%'}});
+  gsap.from('#bubble',{scale:.4,autoAlpha:0,transformOrigin:'0% 50%',duration:.8,delay:.35,ease:'back.out(2)',scrollTrigger:{trigger:'.welcome',start:'top 85%'}});
+  /* en el pie se asoma sobre la última letra, como en el logo */
+  gsap.from('#giantChef',{yPercent:110,autoAlpha:0,duration:1,delay:.6,ease:'back.out(1.6)',scrollTrigger:{trigger:'#giant',start:'top 95%'}});
+  gsap.from('.warn .chef',{yPercent:60,autoAlpha:0,duration:.9,ease:'back.out(1.8)',scrollTrigger:{trigger:'.warn',start:'top 90%'}});
 
   /* titulares */
   $$('.split:not(#h1)').forEach(h=>gsap.from(h.querySelectorAll('.w>span'),{yPercent:110,duration:1.1,ease:'expo.out',stagger:.05,scrollTrigger:{trigger:h,start:'top 85%'}}));
