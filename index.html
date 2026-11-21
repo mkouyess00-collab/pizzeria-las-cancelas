@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pizzería Las Cancelas</title>
+<meta name="description" content="La primera pizzería manchega del mundo. Pizzas en bandeja a 300 °C en Alcázar de San Juan. C. San Francisco, 20 · 926 54 59 65.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<!--
+  Dirección: "Hay cosas que no se pueden imitar". Editorial manchego cálido: noche de horno (marrón tostado),
+  crema de mantel, rojo tomate, azul de azulejo y azafrán. Fotos grandes de comida, motion con GSAP + ScrollTrigger,
+  Lenis como único motor de scroll suave. Sin Three.js (no aporta a la historia).
+  Fotos: las del propio local en su ficha de Google Maps.
+-->
+<style>
+:root{
+  --night:#1E130D; --night-2:#2B1C14;
+  --cream:#F4EADA; --paper:#FBF5EA;
+  --ink:#24170F; --ink-2:#5C4738;
+  --tomato:#B5381F; --tomato-dk:#8F2A16;
+  --saffron:#EDB04A; --saffron-lt:#F7D58C;
+  --tile:#1D4F86;
+  --line:rgba(36,23,15,.14); --line-lt:rgba(244,234,218,.18);
+  --serif:"Fraunces",Georgia,serif; --sans:"Instrument Sans",system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{background:var(--night);color:var(--cream);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{max-width:1320px;margin:0 auto;padding:0 40px}
+@media(max-width:640px){.wrap{padding:0 16px}body{font-size:16px}}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:3px;border-radius:4px}
+iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
+
+/* ---------- preloader ---------- */
+.loader{position:fixed;inset:0;z-index:100;background:var(--tomato);display:none;align-items:flex-end;justify-content:space-between;padding:40px;color:var(--paper)}
+.js .loader{display:flex}
+.loader .n{font-family:var(--serif);font-weight:600;font-size:clamp(90px,18vw,260px);line-height:.8;letter-spacing:-.05em}
+.loader .n sup{font-size:.35em;vertical-align:top}
+.loader p{font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;max-width:16em;text-align:right}
+@media(max-width:640px){.loader{padding:20px;flex-direction:column;align-items:flex-start}.loader p{text-align:left}}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;inset:0 0 auto;z-index:50;transition:transform .5s var(--ease),background .4s}
+.nav.hide{transform:translateY(-100%)}
+.nav.solid{background:rgba(30,19,13,.82);backdrop-filter:blur(12px)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px}
+.logo{font-family:var(--serif);font-weight:700;font-size:23px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.logo i{width:32px;height:32px;border-radius:7px;background:var(--tile);display:grid;place-items:center;font-style:normal}
+.nav ul{display:flex;gap:34px;list-style:none;font-size:15px;font-weight:500}
+.nav ul a{opacity:.8;transition:opacity .2s}.nav ul a:hover{opacity:1}
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;transition:transform .3s var(--ease),background .25s,color .25s;white-space:nowrap;position:relative;overflow:hidden}
+.btn:active{transform:scale(.96)}
+.btn-tomato{background:var(--tomato);color:var(--paper)}.btn-tomato:hover{background:var(--tomato-dk)}
+.btn-cream{background:var(--cream);color:var(--ink)}.btn-cream:hover{background:var(--saffron)}
+.btn-ghost{border:1.5px solid currentColor}
+.btn-ghost:hover{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+@media(max-width:900px){.nav ul{display:none}}
+@media(max-width:420px){.nav .btn{padding:11px 16px;font-size:14px}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100svh;min-height:640px;overflow:hidden;display:flex;align-items:flex-end}
+.hero-media{position:absolute;inset:0;overflow:hidden}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transform-origin:center}
+.hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,19,13,.55) 0%,rgba(30,19,13,.05) 28%,rgba(30,19,13,.55) 52%,rgba(30,19,13,.96) 82%)}
+.hero .wrap{position:relative;width:100%;padding-bottom:56px}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron-lt);display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:30px;height:1.5px;background:currentColor}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(54px,9.6vw,168px);line-height:.88;letter-spacing:-.045em;margin:20px 0 0;font-variation-settings:"opsz" 144;max-width:12ch}
+.hero h1 em{font-style:italic;font-weight:300;color:var(--saffron)}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:36px;flex-wrap:wrap}
+.hero-foot p{max-width:30em;font-size:clamp(16px,1.3vw,19px);color:rgba(244,234,218,.88)}
+.hero-foot .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.score{position:absolute;right:40px;top:120px;text-align:right}
+.score b{font-family:var(--serif);font-size:64px;font-weight:500;letter-spacing:-.04em;line-height:1}
+.score .st{color:var(--saffron);letter-spacing:3px}
+.score small{display:block;font-size:13px;opacity:.85}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.w>span{display:inline-block}
+@media(max-width:700px){.score{right:16px;top:96px}.score b{font-size:44px}.hero .wrap{padding-bottom:110px}}
+
+/* ---------- marquee ---------- */
+.marquee{background:var(--saffron);color:var(--ink);overflow:hidden;padding:18px 0}
+.track{display:flex;width:max-content;font-family:var(--serif);font-size:clamp(26px,3.4vw,48px);font-weight:500;letter-spacing:-.02em;will-change:transform}
+.track span{display:flex;align-items:center;gap:36px;padding-right:36px;white-space:nowrap}
+.track span::after{content:"";width:.5em;height:.5em;border-radius:50%;background:var(--tomato)}
+.track span:nth-child(even){font-style:italic;font-weight:300}
+
+/* ---------- manifesto ---------- */
+.manifesto{background:var(--cream);color:var(--ink);padding:clamp(100px,14vw,200px) 0}
+.manifesto .kicker{color:var(--tomato)}
+.big-text{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.6vw,72px);line-height:1.06;letter-spacing:-.03em;margin-top:34px;max-width:19ch}
+.js .big-text .fw{opacity:.16}
+.big-text em{font-style:italic;color:var(--tomato)}
+.mani-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:90px;align-items:end}
+.mani-photo{border-radius:24px;overflow:hidden;aspect-ratio:4/5;position:relative}
+.mani-photo img{width:100%;height:120%;object-fit:cover;position:absolute;top:-10%}
+.facts{border-top:1.5px solid var(--ink)}
+.fact{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:baseline;padding:28px 0;border-bottom:1px solid var(--line)}
+.fact b{font-family:var(--serif);font-weight:500;font-size:clamp(52px,6vw,96px);letter-spacing:-.05em;line-height:.9;min-width:3.2ch}
+.fact b sup{font-size:.4em;color:var(--tomato);vertical-align:top;line-height:1}
+.fact>span{color:var(--ink-2);font-size:16px;max-width:22em}
+.fact>span strong{display:block;color:var(--ink);font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:4px}
+@media(max-width:860px){.mani-grid{grid-template-columns:1fr;gap:40px}.mani-photo{aspect-ratio:4/3}}
+@media(max-width:480px){.fact{grid-template-columns:1fr;gap:10px}}
+
+/* ---------- pizzas (lista + foto fija) ---------- */
+.pizzas{background:var(--night);padding:clamp(100px,12vw,170px) 0}
+.pz-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;align-items:start}
+.pz-photo{position:sticky;top:110px}
+.pz-frame{border-radius:28px;overflow:hidden;aspect-ratio:4/5;position:relative}
+.pz-frame img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover}
+.stamp{position:absolute;right:-18px;bottom:36px;background:var(--saffron);color:var(--ink);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:12px 18px;border-radius:999px;transform:rotate(-6deg);box-shadow:0 14px 30px -12px rgba(0,0,0,.6)}
+.menu{list-style:none;margin-top:44px;border-top:1px solid var(--line-lt)}
+.menu li{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:24px 0;border-bottom:1px solid var(--line-lt);transition:padding .4s var(--ease)}
+.menu li:hover{padding-left:12px}
+.menu .mn{font-family:var(--serif);font-size:16px;color:var(--saffron);padding-top:10px}
+.menu h3{font-family:var(--serif);font-weight:500;font-size:clamp(30px,3vw,44px);letter-spacing:-.03em;line-height:1.05;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.menu p{color:rgba(244,234,218,.75);margin-top:6px}
+.menu .t{font-family:var(--sans);font-style:normal;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:var(--tomato);color:var(--paper)}
+.menu .t.s{background:var(--saffron);color:var(--ink)}.menu .t.b{background:var(--tile)}
+.menu-foot{display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:36px}
+.menu-foot p{max-width:30em;color:rgba(244,234,218,.75);font-size:15px}
+@media(max-width:900px){.pz-grid{grid-template-columns:1fr;gap:48px}.pz-photo{position:relative;top:0}.pz-frame{aspect-ratio:4/3}.stamp{right:12px}}
+.pz figcaption{display:block}
+/* ---------- pizzas (horizontal) ---------- */
+.carta{background:var(--night);position:relative;overflow:hidden}
+.carta-intro{padding:clamp(100px,12vw,160px) 40px 56px}
+.carta-intro .row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6.4vw,110px);line-height:.92;letter-spacing:-.045em;font-variation-settings:"opsz" 144}
+h2 em{font-style:italic;font-weight:300;color:var(--saffron)}
+.carta-intro p{max-width:26em;color:rgba(244,234,218,.75)}
+.hscroll{position:relative}
+.htrack{display:flex;gap:28px;padding:0 40px 120px;width:max-content}
+.pz{width:min(420px,78vw,calc((100svh - 230px)*.8));min-width:240px;flex:none;position:relative}
+.pz .ph{aspect-ratio:4/5;border-radius:26px;overflow:hidden;position:relative;background:var(--night-2)}
+.pz .ph img{width:100%;height:100%;object-fit:cover}
+.pz .num{position:absolute;top:18px;left:20px;font-family:var(--serif);font-size:15px;background:rgba(30,19,13,.7);backdrop-filter:blur(6px);padding:6px 12px;border-radius:999px}
+.pz .tag{position:absolute;top:18px;right:20px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:999px;background:var(--tomato);color:var(--paper)}
+.pz .tag.b{background:var(--tile)}.pz .tag.s{background:var(--saffron);color:var(--ink)}
+.pz h3{font-family:var(--serif);font-weight:500;font-size:clamp(34px,3vw,46px);letter-spacing:-.03em;margin-top:22px;line-height:1}
+.pz p{color:rgba(244,234,218,.75);margin-top:10px;font-size:16px;max-width:30ch}
+.pz.end{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:22px;background:var(--tomato);border-radius:26px;padding:40px;aspect-ratio:4/5;align-self:flex-start}
+.pz.end h3{margin:0;font-size:clamp(38px,3.6vw,54px)}
+.pz.end p{color:var(--paper)}
+.progress{position:absolute;left:40px;right:40px;bottom:60px;height:2px;background:var(--line-lt)}
+.progress i{display:block;height:100%;width:100%;background:var(--saffron);transform-origin:left;transform:scaleX(0)}
+.no-pin .hscroll{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.no-pin .pz{scroll-snap-align:start}
+.no-pin .progress{display:none}
+@media(max-width:640px){.htrack{padding:0 16px 80px;gap:16px}.carta-intro{padding-left:16px;padding-right:16px}.pz .ph img{transform:none!important}}
+
+/* ---------- delicias ---------- */
+.delicias{background:var(--paper);color:var(--ink);padding:clamp(100px,12vw,170px) 0}
+.delicias h2 em{color:var(--tomato)}
+.del-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;margin-top:70px;align-items:start}
+.stack{position:relative;height:clamp(420px,52vw,680px)}
+.stack figure{position:absolute;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -28px rgba(36,23,15,.5)}
+.stack figure img{width:100%;height:100%;object-fit:cover}
+.stack .a{inset:0 22% 18% 0}
+.stack .a img{height:116%;margin-top:-8%}
+.stack .b{width:46%;aspect-ratio:3/4;right:0;bottom:0;border:8px solid var(--paper)}
+.stack figcaption{position:absolute;left:14px;bottom:14px;background:var(--paper);color:var(--ink);font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px}
+.list h3{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--tomato);margin-bottom:14px}
+.list ul{list-style:none;border-top:1.5px solid var(--ink);margin-bottom:44px}
+.list li{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);font-family:var(--serif);font-size:clamp(21px,1.8vw,26px);letter-spacing:-.015em;transition:padding .35s var(--ease),color .3s}
+.list li:hover{padding-left:12px;color:var(--tomato-dk)}
+.list li small{font-family:var(--sans);font-size:14px;color:var(--ink-2);align-self:center;text-align:right;letter-spacing:0}
+@media(max-width:900px){.del-grid{grid-template-columns:1fr}}
+
+/* ---------- local ---------- */
+.local{background:var(--tile);color:var(--paper);padding:clamp(100px,12vw,170px) 0;position:relative;overflow:hidden}
+.local h2 em{color:var(--saffron-lt)}
+.local .grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.local p.lead{color:rgba(251,245,234,.85);margin-top:24px;max-width:30em;font-size:18px}
+.feats{list-style:none;margin-top:40px;border-top:1px solid rgba(251,245,234,.25)}
+.feats li{display:flex;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid rgba(251,245,234,.25);font-size:17px}
+.feats iconify-icon{font-size:24px;color:var(--saffron-lt);flex:none}
+.mosaic{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;transform:rotate(4deg)}
+.mosaic div{aspect-ratio:1;border-radius:8px;background:var(--paper);overflow:hidden;will-change:transform}
+.mosaic svg{width:100%;height:100%;display:block}
+.mosaic .g{background:repeating-linear-gradient(0deg,rgba(200,64,42,.6) 0 13px,transparent 13px 26px),repeating-linear-gradient(90deg,rgba(200,64,42,.6) 0 13px,transparent 13px 26px),var(--paper)}
+.mosaic .s{background:var(--saffron)}.mosaic .t{background:var(--tomato)}
+.mosaic .p{background:var(--night-2)}
+.mosaic .p img{width:100%;height:100%;object-fit:cover}
+@media(max-width:900px){.local .grid{grid-template-columns:1fr}.mosaic{max-width:480px}}
+
+/* ---------- reseñas ---------- */
+.resenas{background:var(--cream);color:var(--ink);padding:clamp(100px,12vw,170px) 0}
+.resenas h2 em{color:var(--tomato)}
+.rv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.bigscore{display:flex;align-items:center;gap:20px}
+.bigscore b{font-family:var(--serif);font-size:clamp(90px,12vw,180px);font-weight:500;letter-spacing:-.06em;line-height:.8}
+.bigscore .st{color:#B87A12;font-size:24px;letter-spacing:3px}
+.bigscore small{display:block;color:var(--ink-2)}
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:80px}
+.q{background:var(--paper);border-radius:24px;padding:34px;display:flex;flex-direction:column;justify-content:space-between;min-height:300px;transition:transform .5s var(--ease)}
+.q:hover{transform:translateY(-8px) rotate(-.6deg)}
+.q:nth-child(2){background:var(--tomato);color:var(--paper)}
+.q p{font-family:var(--serif);font-size:clamp(23px,2vw,29px);line-height:1.22;letter-spacing:-.015em}
+.q p::before{content:"“";display:block;font-size:2.4em;line-height:.6;color:var(--tomato);margin-bottom:6px}
+.q:nth-child(2) p::before{color:var(--saffron-lt)}
+.q footer{margin-top:26px;font-size:14px;opacity:.85}.q:nth-child(2) footer{opacity:1}
+.warn{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;background:var(--night);color:var(--cream);border-radius:24px;padding:30px 34px}
+.warn p{font-size:17px;max-width:44em}
+.warn p b{display:block;font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:4px;color:var(--saffron)}
+@media(max-width:900px){.quotes{grid-template-columns:1fr}.q{min-height:0}}
+
+/* ---------- visita ---------- */
+.visita{background:var(--night);padding:clamp(100px,12vw,170px) 0 60px}
+.visita .grid{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.hours{margin-top:40px;border-top:1px solid var(--line-lt)}
+.hours div{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line-lt);font-size:17px}
+.hours div.today{color:var(--saffron);font-weight:600}
+.hours .closed{color:rgba(244,234,218,.55)}
+.status{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:10px 16px;border-radius:999px;background:var(--night-2);font-size:15px}
+.dot{width:10px;height:10px;border-radius:50%;background:#55B068;box-shadow:0 0 0 0 rgba(85,176,104,.6);animation:pulse 2s infinite}
+.dot.off{background:var(--tomato);animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(85,176,104,0)}100%{box-shadow:0 0 0 0 rgba(85,176,104,0)}}
+.info{border-top:1px solid var(--line-lt)}
+.info a,.info div{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:24px 0;border-bottom:1px solid var(--line-lt)}
+.info small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,234,218,.65);display:block;margin-bottom:6px}
+.info strong{font-family:var(--serif);font-size:clamp(21px,2vw,28px);font-weight:400;letter-spacing:-.015em}
+.info iconify-icon{font-size:26px;color:var(--saffron);transition:transform .35s var(--ease);flex:none}
+.info a:hover iconify-icon{transform:translate(4px,-4px)}
+.visita .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}
+@media(max-width:900px){.visita .grid{grid-template-columns:1fr;gap:48px}}
+@media(max-width:480px){.hours div{flex-direction:column;gap:2px}}
+.giant{font-family:var(--serif);font-weight:600;font-size:clamp(60px,16.5vw,270px);letter-spacing:-.06em;line-height:.85;color:#E25A3E;white-space:nowrap;text-align:center;margin-top:120px;overflow:hidden}
+.giant span{display:inline-block}
+footer.site{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:rgba(244,234,218,.65);border-top:1px solid var(--line-lt);padding-top:24px;margin-top:40px}
+footer.site a{text-decoration:underline;text-underline-offset:2px}
+
+.callbar{position:fixed;left:16px;right:16px;bottom:16px;z-index:60;display:none}
+.callbar .btn{width:100%;justify-content:center;box-shadow:0 14px 30px -10px rgba(0,0,0,.6)}
+@media(max-width:640px){.callbar{display:block}.visita{padding-bottom:110px}}
+
+@media(prefers-reduced-motion:reduce){.dot{animation:none}.js .loader{display:none}.js .big-text .fw{opacity:1}}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="n"><span id="ln">0</span><sup>°C</sup></div>
+  <p>Calentando el horno · Pizzería manchega desde la calle San Francisco</p>
+</div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Las Cancelas, inicio"><i><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8C62 30 70 38 92 50 70 62 62 70 50 92 38 70 30 62 8 50 30 38 38 30 50 8Z" fill="#FBF5EA"/><circle cx="50" cy="50" r="12" fill="#EDB04A"/></svg></i>Las Cancelas</a>
+    <nav aria-label="Principal"><ul>
+      <li><a href="#casa">La casa</a></li>
+      <li><a href="#carta">Pizzas</a></li>
+      <li><a href="#delicias">Carta</a></li>
+      <li><a href="#local">El local</a></li>
+      <li><a href="#visita">Horario</a></li>
+    </ul></nav>
+    <a class="btn btn-tomato" href="tel:+34926545965"><iconify-icon icon="solar:phone-calling-bold"></iconify-icon>926 54 59 65</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero" aria-labelledby="h1">
+  <div class="hero-media"><img id="heroImg" src="img/fachada.jpg" alt="Fachada de Pizzería Las Cancelas en la calle San Francisco, con su mural de azulejos" fetchpriority="high"></div>
+  <div class="score" data-hero>
+    <b>4,7</b><div class="st" aria-hidden="true">★★★★★</div><small>2.211 reseñas en Google</small>
+  </div>
+  <div class="wrap">
+    <div class="kicker" data-hero>La primera pizzería manchega del mundo</div>
+    <h1 id="h1" class="split">Hay cosas que no se pueden <em>imitar.</em></h1>
+    <div class="hero-foot">
+      <p data-hero>Pizza en bandeja metálica a 300 grados, con sabores de La Mancha, en un local chiquitito de azulejo y manteles de cuadros. En Alcázar de San Juan.</p>
+      <div class="ctas" data-hero>
+        <a class="btn btn-cream" href="#carta">Ver las pizzas</a>
+        <a class="btn btn-ghost" href="tel:+34926545965">Pedir para llevar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="track" id="track">
+    <span>Don Quijote</span><span>De Corral</span><span>De Matanza</span><span>Roquefort</span><span>Serrana</span><span>Inferno</span><span>San Ardalión</span><span>Feriantina</span>
+    <span>Don Quijote</span><span>De Corral</span><span>De Matanza</span><span>Roquefort</span><span>Serrana</span><span>Inferno</span><span>San Ardalión</span><span>Feriantina</span>
+  </div>
+</div>
+
+<!-- MANIFIESTO -->
+<section class="manifesto" id="casa">
+  <div class="wrap">
+    <div class="kicker">La casa</div>
+    <p class="big-text" id="bigText">No somos una pizzería italiana. Somos <em>manchegos.</em> Nuestra pizza se hace sobre bandeja de metal, en horno a 300 grados, con queso manchego, membrillo, lomo de matanza y tomate de Herencia.</p>
+
+    <div class="mani-grid">
+      <div class="mani-photo"><img data-par src="img/pizza-manchega.jpg" alt="Pizza manchega de Las Cancelas cortada en porciones" loading="lazy"></div>
+      <div class="facts">
+        <div class="fact" data-up><b><span data-count="300">300</span><sup>°C</sup></b><span><strong>Horno a fuego fuerte</strong>Sobre bandeja metálica: base fina, crujiente y bien tostada.</span></div>
+        <div class="fact" data-up><b><span data-count="21">21</span></b><span><strong>Pizzas en la carta</strong>Todas en tamaño Super y también sin gluten.</span></div>
+        <div class="fact" data-up><b><span data-count="4.7" data-dec="1">4,7</span><sup>★</sup></b><span><strong>2.211 reseñas</strong>Lo que dice la gente que ya ha venido.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIZZAS -->
+<section class="pizzas" id="carta" aria-labelledby="h2pz">
+  <div class="wrap">
+    <div class="pz-grid">
+      <div class="pz-photo"><div class="pz-frame"><img data-par src="img/pizza-aceitunas.jpg" alt="Pizza de Las Cancelas con aceitunas negras, en bandeja" loading="lazy"></div><span class="stamp">Bandeja · 300 °C</span></div>
+      <div>
+        <div class="kicker">Las pizzas</div>
+        <h2 id="h2pz" class="split" style="margin-top:22px">Pizzas con <em>apellido</em> manchego.</h2>
+        <ol class="menu">
+          <li data-up><span class="mn">01</span><div><h3>De Corral <em class="t">Popular</em></h3><p>Pollo adobado, setas, mozzarella, orégano y tomate.</p></div></li>
+          <li data-up><span class="mn">02</span><div><h3>Don Quijote <em class="t s">De aquí</em></h3><p>Queso manchego y carne de membrillo.</p></div></li>
+          <li data-up><span class="mn">03</span><div><h3>Roquefort <em class="t b">Popular</em></h3><p>Queso roquefort, mozzarella, orégano y tomate.</p></div></li>
+          <li data-up><span class="mn">04</span><div><h3>De Matanza</h3><p>Lomo, chorizo y pimiento verde.</p></div></li>
+          <li data-up><span class="mn">05</span><div><h3>Serrana</h3><p>Tomate de Herencia en rodajas y jamón serrano.</p></div></li>
+          <li data-up><span class="mn">06</span><div><h3>Inferno <em class="t">Pica</em></h3><p>Magro y salsa picante. Avisados quedáis.</p></div></li>
+        </ol>
+        <div class="menu-foot" data-up>
+          <p>Y quince más: Napolitana, Jardinera, 4 Estaciones, Marinera, Calzone, San Ardalión, Feriantina… Todas en tamaño Super y sin gluten.</p>
+          <a class="btn btn-cream" href="https://pizzerialascancelas.es/carta/" target="_blank" rel="noopener">Carta completa <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA HORIZONTAL DEL LOCAL -->
+<section class="carta" id="local-fotos" aria-labelledby="h2gal">
+  <div class="carta-intro">
+    <div class="row">
+      <h2 id="h2gal" class="split">Pasa, que esto <em>hay que verlo.</em></h2>
+      <p>Cerámica en las paredes, un tren por el techo, juguetes en cada rincón y una maqueta que se merece una visita por sí sola.</p>
+    </div>
+  </div>
+  <div class="hscroll" id="hscroll">
+    <div class="htrack" id="htrack">
+      <figure class="pz"><div class="ph"><img src="img/comedor.jpg" alt="Comedor con mesas de manteles de cuadros verdes" loading="lazy"><span class="num">01</span></div><figcaption><h3>El comedor</h3><p>Manteles de cuadros y sillas castellanas.</p></figcaption></figure>
+      <figure class="pz"><div class="ph"><img src="img/pared-ceramica.jpg" alt="Pared cubierta de platos de cerámica, escudos y objetos antiguos" loading="lazy"><span class="num">02</span></div><figcaption><h3>La pared de cerámica</h3><p>Platos, escudos y recuerdos de toda la vida.</p></figcaption></figure>
+      <figure class="pz"><div class="ph"><img src="img/interior-lamparas.jpg" alt="Interior del local con lámparas de araña y juguetes colgados" loading="lazy"><span class="num">03</span></div><figcaption><h3>Mires donde mires</h3><p>Lámparas, juguetes y detalles por todas partes.</p></figcaption></figure>
+      <figure class="pz"><div class="ph"><img src="img/tren-techo.jpg" alt="Techo del local con un tren de juguete y un globo" loading="lazy"><span class="num">04</span></div><figcaption><h3>El tren del techo</h3><p>Los peques no le quitan ojo.</p></figcaption></figure>
+      <figure class="pz"><div class="ph"><img src="img/maqueta.jpg" alt="Maqueta iluminada de un patio con arcos" loading="lazy"><span class="num">05</span></div><figcaption><h3>La maqueta</h3><p>Una de las joyas de la casa.</p></figcaption></figure>
+      <figure class="pz"><div class="ph"><img src="img/puerta-cocinero.jpg" alt="Entrada de Las Cancelas con la figura de un cocinero en la puerta" loading="lazy"><span class="num">06</span></div><figcaption><h3>La puerta</h3><p>El cocinero de la entrada ya te está esperando.</p></figcaption></figure>
+      <article class="pz end">
+        <h3>Ven a verlo en persona.</h3>
+        <p>Calle San Francisco, 20. De miércoles a domingo, a mediodía y por la noche.</p>
+        <a class="btn btn-cream" href="#visita">Horario y dirección <iconify-icon icon="solar:arrow-right-down-linear"></iconify-icon></a>
+      </article>
+    </div>
+    <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+  </div>
+</section>
+
+<!-- DELICIAS -->
+<section class="delicias" id="delicias" aria-labelledby="h2del">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--tomato-dk)">Además de pizza</div>
+    <h2 id="h2del" class="split" style="margin-top:22px">Y hay <em>hueco</em> para el postre.</h2>
+    <div class="del-grid">
+      <div class="stack">
+        <figure class="a"><img data-par src="img/cazuela.jpg" alt="Cazuela de barro gratinada servida en la mesa" loading="lazy"><figcaption>Gratinado en cazuela</figcaption></figure>
+        <figure class="b"><img src="img/pizza-manchega.jpg" alt="Pizza de la casa recién salida del horno" loading="lazy"><figcaption>Recién salida del horno</figcaption></figure>
+      </div>
+      <div class="list">
+        <h3>Otras delicias</h3>
+        <ul>
+          <li data-up>Empanada de la casa <small>huevo, tomate, atún y masa casera</small></li>
+          <li data-up>Lasaña <small>también vegetal</small></li>
+          <li data-up>Espagueti de la casa</li>
+          <li data-up>Canelones</li>
+          <li data-up>Costillas Pompeya</li>
+        </ul>
+        <h3>Postres caseros</h3>
+        <ul>
+          <li data-up>Tiramisú de la casa <small>el que más fotos se lleva</small></li>
+          <li data-up>Natillas del Paraíso</li>
+          <li data-up>Tarta de queso</li>
+          <li data-up>Arroz con leche</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCAL -->
+<section class="local" id="local" aria-labelledby="h2loc">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="kicker" style="color:var(--saffron-lt)">El local</div>
+        <h2 id="h2loc" class="split" style="margin-top:22px">Chiquitito, y muy <em>de casa.</em></h2>
+        <p class="lead">Un comedor pequeño donde cada pared cuenta algo. Quien viene una vez se acuerda de la decoración, de los juguetes y del trato de Víctor y su equipo.</p>
+        <ul class="feats">
+          <li data-up><iconify-icon icon="solar:widget-4-linear"></iconify-icon>Mosaico de cerámica en la pared</li>
+          <li data-up><iconify-icon icon="solar:armchair-2-linear"></iconify-icon>Sillas castellanas y manteles de cuadros</li>
+          <li data-up><iconify-icon icon="solar:smile-circle-linear"></iconify-icon>Juguetes y detalles por todo el local</li>
+          <li data-up><iconify-icon icon="solar:bag-4-linear"></iconify-icon>Comer allí o para llevar</li>
+        </ul>
+      </div>
+      <div class="mosaic" id="mosaic" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEÑAS -->
+<section class="resenas" id="resenas" aria-labelledby="h2res">
+  <div class="wrap">
+    <div class="rv-head">
+      <div>
+        <div class="kicker" style="color:var(--tomato-dk)">Reseñas</div>
+        <h2 id="h2res" class="split" style="margin-top:22px">Lo dicen <em>ellos.</em></h2>
+      </div>
+      <div class="bigscore"><b>4,7</b><div><div class="st" aria-hidden="true">★★★★★</div><small>2.211 reseñas en Google</small></div></div>
+    </div>
+    <div class="quotes">
+      <figure class="q" data-up><p>Trato inmejorable y las pizzas, lasaña, empanada y su sangría fresquita.</p><footer>Reseña en Google</footer></figure>
+      <figure class="q" data-up><p>Toda una experiencia gastronómica y cultural. Las mejores pizzas de la provincia.</p><footer>Victor · Local Guide en Google</footer></figure>
+      <figure class="q" data-up><p>Comida casera, postres caseros, todo muy rico y un trato excelente.</p><footer>Reseña en Google</footer></figure>
+    </div>
+    <div class="warn" data-up>
+      <p><b>Ven con tiempo</b>No se reservan mesas de menos de 10 personas y los fines de semana hay cola. Si no quieres esperar, llama y te la llevas a casa.</p>
+      <a class="btn btn-tomato" href="tel:+34926545965"><iconify-icon icon="solar:phone-calling-bold"></iconify-icon>926 54 59 65</a>
+    </div>
+  </div>
+</section>
+
+<!-- VISITA -->
+<section class="visita" id="visita" aria-labelledby="h2vis">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="kicker">Horario y dirección</div>
+        <h2 id="h2vis" class="split" style="margin-top:22px">En la calle <em>San Francisco.</em></h2>
+        <div class="status"><span class="dot" id="dot"></span><span id="stTxt">Miércoles a domingo</span></div>
+        <div class="hours" id="hours">
+          <div data-d="3"><span>Miércoles</span><span>12:45–16:00 · 19:45–00:00</span></div>
+          <div data-d="4"><span>Jueves</span><span>12:45–16:00 · 19:45–00:00</span></div>
+          <div data-d="5"><span>Viernes</span><span>12:45–16:00 · 19:45–00:00</span></div>
+          <div data-d="6"><span>Sábado</span><span>12:45–16:00 · 19:45–00:00</span></div>
+          <div data-d="0"><span>Domingo</span><span>12:45–16:00 · 19:45–00:00</span></div>
+          <div data-d="1" class="closed"><span>Lunes</span><span>Cerrado</span></div>
+          <div data-d="2" class="closed"><span>Martes</span><span>Cerrado</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="info">
+          <a href="https://www.google.com/maps/search/?api=1&query=Pizzer%C3%ADa+Las+Cancelas+Alc%C3%A1zar+de+San+Juan" target="_blank" rel="noopener"><span><small>Dirección</small><strong>C. San Francisco, 20<br>13600 Alcázar de San Juan</strong></span><iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon></a>
+          <a href="tel:+34926545965"><span><small>Teléfono y para llevar</small><strong>926 54 59 65</strong></span><iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon></a>
+          <div><span><small>Precio</small><strong>10–20 € por persona</strong></span></div>
+          <a href="https://pizzerialascancelas.es" target="_blank" rel="noopener"><span><small>Web</small><strong>pizzerialascancelas.es</strong></span><iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon></a>
+        </div>
+        <div class="ctas">
+          <a class="btn btn-tomato" href="https://www.google.com/maps/search/?api=1&query=Pizzer%C3%ADa+Las+Cancelas+Alc%C3%A1zar+de+San+Juan" target="_blank" rel="noopener"><iconify-icon icon="solar:map-point-bold"></iconify-icon>Cómo llegar</a>
+          <a class="btn btn-ghost" href="tel:+34926545965">Llamar ahora</a>
+        </div>
+      </div>
+    </div>
+    <div class="giant" id="giant" aria-hidden="true">Las Cancelas</div>
+    <footer class="site">
+      <span>© Pizzería Las Cancelas · Alcázar de San Juan, Ciudad Real</span>
+      <span>Fotos del local publicadas en su ficha de Google Maps</span>
+    </footer>
+  </div>
+</section>
+</main>
+
+<div class="callbar"><a class="btn btn-tomato" href="tel:+34926545965"><iconify-icon icon="solar:phone-calling-bold"></iconify-icon>Llamar · 926 54 59 65</a></div>
+
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s=>document.querySelector(s), $$ = s=>[...document.querySelectorAll(s)];
+
+  /* mosaico: azulejo + cuadros + fotos */
+  const tile='<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#FBF5EA"/><path d="M50 8C62 30 70 38 92 50 70 62 62 70 50 92 38 70 30 62 8 50 30 38 38 30 50 8Z" fill="#1D4F86"/><circle cx="50" cy="50" r="11" fill="#EDB04A"/><circle cx="50" cy="50" r="4.5" fill="#C8402A"/><path d="M0 0h18A18 18 0 0 1 0 18zM100 0v18A18 18 0 0 1 82 0zM0 100V82a18 18 0 0 1 18 18zM100 100H82a18 18 0 0 1 18-18z" fill="#1D4F86"/></svg>';
+  const pics={p1:'img/pared-ceramica.jpg',p2:'img/interior-lamparas.jpg'};
+  const layout=['x','g','p1','s','g','x','t','x','x','s','x','g','t','p2','g','x'];
+  $('#mosaic').innerHTML=layout.map(k=>k==='x'?`<div>${tile}</div>`:k.startsWith('p')?`<div class="p"><img src="${pics[k]}" alt="" loading="lazy"></div>`:`<div class="${k}"></div>`).join('');
+
+  /* horario: abierto/cerrado */
+  (function(){
+    const now=new Date(),d=now.getDay(),m=now.getHours()*60+now.getMinutes();
+    const row=$(`#hours [data-d="${d}"]`); if(row) row.classList.add('today');
+    const openDay=d!==1&&d!==2, lunch=m>=765&&m<960, dinner=m>=1185;
+    const open=openDay&&(lunch||dinner);
+    let txt;
+    if(open) txt=lunch?'Abierto ahora · cierra a las 16:00':'Abierto ahora · cierra a las 00:00';
+    else if(!openDay) txt='Hoy cerrado · abrimos el miércoles a las 12:45';
+    else txt=m<765?'Cerrado · abrimos hoy a las 12:45':'Cerrado · abrimos hoy a las 19:45';
+    $('#stTxt').textContent=txt; if(!open) $('#dot').classList.add('off');
+  })();
+
+  const loader=$('#loader');
+  if(!window.gsap||!window.ScrollTrigger||reduce){ if(loader) loader.remove(); document.body.classList.add('no-pin'); $$('.big-text .fw').forEach(s=>s.style.opacity=1); return; }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Lenis: único motor de scroll suave */
+  let lenis=null;
+  if(window.Lenis){
+    lenis=new Lenis({duration:1.15,smoothWheel:true});
+    lenis.on('scroll',ScrollTrigger.update);
+    gsap.ticker.add(t=>lenis.raf(t*1000));
+    gsap.ticker.lagSmoothing(0);
+    $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();lenis.scrollTo(t,{offset:0});}}));
+  }
+
+  /* split de titulares por palabras (nombre accesible intacto) */
+  $$('.split').forEach(el=>{
+    el.setAttribute('aria-label',el.textContent.replace(/\s+/g,' ').trim());
+    const walk=node=>{
+      [...node.childNodes].forEach(n=>{
+        if(n.nodeType===3){
+          const frag=document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(p=>{
+            if(!p) return;
+            if(/^\s+$/.test(p)){frag.appendChild(document.createTextNode(' '));return;}
+            const w=document.createElement('span');w.className='w';w.setAttribute('aria-hidden','true');
+            const i=document.createElement('span');i.textContent=p;w.appendChild(i);frag.appendChild(w);
+          });
+          n.replaceWith(frag);
+        } else if(n.nodeType===1) walk(n);
+      });
+    };
+    walk(el);
+  });
+
+  /* manifiesto: palabras que se encienden al hacer scroll */
+  const bt=$('#bigText');
+  bt.setAttribute('aria-label',bt.textContent.replace(/\s+/g,' ').trim());
+  (function wrap(node){[...node.childNodes].forEach(n=>{if(n.nodeType===3){const f=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(p=>{if(!p)return;if(/^\s+$/.test(p)){f.appendChild(document.createTextNode(' '));return;}const s=document.createElement('span');s.className='fw';s.setAttribute('aria-hidden','true');s.textContent=p;f.appendChild(s);});n.replaceWith(f);}else if(n.nodeType===1)wrap(n);});})(bt);
+
+  /* ---------- PRELOADER + INTRO ---------- */
+  const heroWords=$$('.hero h1 .w>span');
+  gsap.set(heroWords,{yPercent:110});
+  gsap.set('[data-hero]',{autoAlpha:0,y:24});
+  gsap.set('#heroImg',{scale:1.25});
+  const counter={v:0};
+  const intro=gsap.timeline({defaults:{ease:'expo.out'}});
+  intro.to(counter,{v:300,duration:1.3,ease:'power2.inOut',onUpdate:()=>$('#ln').textContent=Math.round(counter.v)})
+       .to(loader,{yPercent:-100,duration:1,ease:'expo.inOut'},'+=.15')
+       .to('#heroImg',{scale:1,duration:2.2},'<.1')
+       .to(heroWords,{yPercent:0,duration:1.3,stagger:.06},'<.35')
+       .to('[data-hero]',{autoAlpha:1,y:0,duration:1,stagger:.08},'<.4')
+       .add(()=>loader.remove());
+  setTimeout(()=>{if(document.body.contains(loader)) intro.progress(1);},6000);
+
+  /* hero parallax de salida */
+  gsap.to('.hero-media',{yPercent:18,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  gsap.to('.hero .wrap',{yPercent:-25,opacity:.15,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+  /* nav: se esconde al bajar */
+  const nav=$('#nav');let last=0;
+  ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{const y=s.scroll();nav.classList.toggle('solid',y>60);nav.classList.toggle('hide',y>last&&y>400);last=y;}});
+
+  /* marquee que acelera con la velocidad del scroll */
+  const track=$('#track');let x=0,dir=1;
+  gsap.ticker.add(()=>{const v=lenis?lenis.velocity:0;if(v)dir=v<0?-1:1;x-=(0.6+Math.min(Math.abs(v)*.35,14))*dir;const h=track.scrollWidth/2;if(x<=-h)x+=h;if(x>0)x-=h;track.style.transform=`translateX(${x}px)`;});
+
+  /* titulares */
+  $$('.split:not(#h1)').forEach(h=>gsap.from(h.querySelectorAll('.w>span'),{yPercent:110,duration:1.1,ease:'expo.out',stagger:.05,scrollTrigger:{trigger:h,start:'top 85%'}}));
+
+  gsap.to('#bigText .fw',{opacity:1,stagger:.1,ease:'none',scrollTrigger:{trigger:'#bigText',start:'top 75%',end:'bottom 45%',scrub:true}});
+
+  $$('[data-up]').forEach(el=>gsap.from(el,{y:40,autoAlpha:0,duration:1,ease:'expo.out',scrollTrigger:{trigger:el,start:'top 92%'}}));
+
+  /* imágenes */
+  $$('[data-par]').forEach(img=>gsap.fromTo(img,{yPercent:-7},{yPercent:7,ease:'none',scrollTrigger:{trigger:img.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
+  gsap.from('.mani-photo',{clipPath:'inset(30% 15% 30% 15% round 24px)',duration:1.6,ease:'expo.out',scrollTrigger:{trigger:'.mani-photo',start:'top 80%'}});
+  gsap.from('.stack .a',{clipPath:'inset(0% 0% 100% 0% round 22px)',duration:1.5,ease:'expo.inOut',scrollTrigger:{trigger:'.stack',start:'top 75%'}});
+  gsap.from('.stack .b',{yPercent:40,rotate:8,autoAlpha:0,duration:1.4,ease:'expo.out',delay:.3,scrollTrigger:{trigger:'.stack',start:'top 75%'}});
+
+  /* contadores */
+  $$('[data-count]').forEach(el=>{
+    const to=parseFloat(el.dataset.count),dec=+el.dataset.dec||0,o={v:0};
+    ScrollTrigger.create({trigger:el,start:'top 88%',once:true,onEnter:()=>gsap.to(o,{v:to,duration:1.6,ease:'power3.out',onUpdate:()=>el.textContent=o.v.toFixed(dec).replace('.',',')})});
+  });
+
+  /* pizzas en horizontal (fijado) solo en pantallas medianas y grandes */
+  const mm=gsap.matchMedia();
+  mm.add('(min-width: 768px)',()=>{
+    const ht=$('#htrack');
+    const dist=()=>Math.max(0,ht.scrollWidth-innerWidth);
+    const tw=gsap.to(ht,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:'#hscroll',start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true,onUpdate:s=>gsap.set('#prog',{scaleX:s.progress})}});
+    $$('.pz .ph img').forEach(img=>gsap.fromTo(img,{scale:1.3},{scale:1,ease:'none',scrollTrigger:{trigger:img.parentElement,containerAnimation:tw,start:'left right',end:'center center',scrub:true}}));
+  });
+  mm.add('(max-width: 767px)',()=>{document.body.classList.add('no-pin');return ()=>document.body.classList.remove('no-pin');});
+
+  /* mosaico */
+  $$('#mosaic div').forEach((t,i)=>gsap.fromTo(t,{y:(i%4-1.5)*40,rotate:(i%3-1)*6},{y:(i%4-1.5)*-30,rotate:0,ease:'none',scrollTrigger:{trigger:'#mosaic',start:'top bottom',end:'bottom top',scrub:true}}));
+
+  /* nombre gigante del footer */
+  const g=$('#giant');g.innerHTML=[...g.textContent].map(c=>`<span>${c===' '?'&nbsp;':c}</span>`).join('');
+  gsap.from('#giant span',{yPercent:100,duration:1.2,ease:'expo.out',stagger:.035,scrollTrigger:{trigger:'#giant',start:'top 95%'}});
+
+  /* botones magnéticos (solo ratón) */
+  if(matchMedia('(pointer:fine)').matches){
+    $$('.btn').forEach(b=>{
+      b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.25,y:(e.clientY-r.top-r.height/2)*.35,duration:.4,ease:'power3.out'});});
+      b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.7,ease:'elastic.out(1,.4)'}));
+    });
+  }
+
+  addEventListener('load',()=>ScrollTrigger.refresh());
+  document.fonts&&document.fonts.ready.then(()=>ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>
