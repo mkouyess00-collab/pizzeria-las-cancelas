@@ -17,12 +17,12 @@
 -->
 <style>
 :root{
-  --night:#163F2A; --night-2:#1E4E35;
-  --cream:#F7EEDB; --paper:#FCF4E4; --sage:#C9DBBF;
-  --ink:#13301F; --ink-2:#4B6253;
-  --tomato:#DE8E5D; --tomato-dk:#8E4322; /* albaricoque de la fachada */
-  --saffron:#EBA877; --saffron-lt:#F5C9A5;
-  --tile:#24603F; /* verde del letrero de la puerta */
+  --night:#1F5E3E; --night-2:#2A6C4A;
+  --cream:#F7F2E7; --paper:#FFFCF5; --sage:#E9F0E4;
+  --ink:#1C2B22; --ink-2:#56645B;
+  --tomato:#B95A36; --tomato-dk:#9A4427; /* barro de los platos */
+  --saffron:#F3CF8E; --saffron-lt:#F8E0B3;
+  --tile:#1F5E3E; /* verde del letrero y de los mantelitos */
   --line:rgba(15,36,25,.14); --line-lt:rgba(246,236,216,.18);
   --display:"Tulpen One","Arial Narrow",sans-serif; --serif:"Alegreya",Georgia,serif; --sans:"Alegreya Sans",system-ui,sans-serif;
   --ease:cubic-bezier(.2,.7,.1,1);
@@ -128,9 +128,9 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .pizzas{background:var(--night);padding:clamp(100px,12vw,170px) 0}
 .pz-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;align-items:start}
 .pz-photo{position:sticky;top:110px}
-.pz-frame{border-radius:28px;overflow:hidden;aspect-ratio:4/5;position:relative}
+.pz-frame{border-radius:28px;overflow:hidden;aspect-ratio:4/5;position:relative;isolation:isolate}
 .pz-frame img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover}
-.stamp{position:absolute;right:-18px;bottom:36px;background:var(--saffron);color:var(--ink);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:12px 18px;border-radius:999px;transform:rotate(-6deg);box-shadow:0 14px 30px -12px rgba(0,0,0,.6)}
+.stamp{z-index:5;position:absolute;right:-18px;bottom:36px;background:var(--saffron);color:var(--ink);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:12px 18px;border-radius:999px;transform:rotate(-6deg);box-shadow:0 14px 30px -12px rgba(0,0,0,.6)}
 .menu{list-style:none;margin-top:44px;border-top:1px solid var(--line-lt)}
 .menu li{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:24px 0;border-bottom:1px solid var(--line-lt);transition:padding .4s var(--ease)}
 .menu li:hover{padding-left:12px}
@@ -260,6 +260,58 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
 .callbar .btn{width:100%;justify-content:center;box-shadow:0 14px 30px -10px rgba(0,0,0,.6)}
 @media(max-width:640px){.callbar{display:block}.visita{padding-bottom:110px}}
 
+/* ===== Paleta luminosa: mantelito blanco con hojas verdes, cuadros verdes y platos de barro ===== */
+.btn-tomato{color:var(--paper)}.btn-tomato:hover{background:var(--tomato-dk);color:var(--paper)}
+.nav{color:var(--ink)}
+.nav.solid{background:rgba(255,252,245,.92);box-shadow:0 1px 0 var(--line)}
+.logo .chef{color:var(--tomato)}
+.loader{background:var(--night);color:var(--paper)!important}
+.loader .chef{color:var(--saffron)}
+/* portada clara con collage de comida */
+.hero{height:auto;min-height:100svh;display:block;background:var(--paper);color:var(--ink);padding:118px 0 80px;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:repeating-linear-gradient(90deg,rgba(31,94,62,.85) 0 13px,transparent 13px 26px),repeating-linear-gradient(0deg,rgba(31,94,62,.45) 0 13px,transparent 13px 26px),var(--paper)}
+.hero .wrap{padding-bottom:0}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;min-height:calc(100svh - 200px)}
+.hero h1{color:var(--ink);font-size:clamp(70px,8.6vw,160px);max-width:none}
+.hero h1 em{color:var(--tomato)}
+.hero-copy>p{max-width:30em;color:var(--ink-2);margin-top:26px;font-size:clamp(17px,1.3vw,20px)}
+.hero-copy>p strong{color:var(--ink)}
+.hero-copy .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.hero .btn-ghost{color:var(--ink)}
+.hero .score{position:static;display:flex;align-items:center;gap:16px;margin-top:40px;text-align:left}
+.hero .score b{font-size:76px}
+.hero .score .st{color:#B8862B}
+.hero .score small{opacity:1;color:var(--ink-2)}
+.hero-media.hero-stack{position:relative;inset:auto;overflow:visible;height:min(76svh,700px)}
+.hero-stack::after{display:none}
+.hs{position:absolute;margin:0;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px -25px rgba(28,43,34,.45)}
+.hs img{width:100%;height:100%;object-fit:cover}
+.hs1{left:10%;top:0;width:60%;height:80%;z-index:2}
+.hs2{right:0;top:20%;width:40%;height:52%;z-index:1}
+.hs3{left:0;bottom:0;width:36%;height:38%;z-index:3;border:8px solid var(--paper)}
+.hero-stamp{position:absolute;right:4%;bottom:8%;z-index:4;background:var(--tile);color:var(--paper);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:12px 18px;border-radius:999px;transform:rotate(-6deg)}
+@media(max-width:900px){.hero{padding-top:100px}.hero-grid{grid-template-columns:1fr;gap:40px;min-height:0}.hero-media.hero-stack{height:118vw;max-height:620px}}
+/* secciones de carta y galería en claro */
+.pizzas{background:var(--paper);color:var(--ink)}
+.carta{background:var(--cream);color:var(--ink)}
+.pizzas h2 em,.carta h2 em{color:var(--tomato)}
+.pizzas .kicker{color:var(--tomato-dk)}
+.menu,.menu li{border-color:var(--line)}
+.menu .mn{color:var(--tomato-dk)}
+.menu p,.menu-foot p,.carta-intro p,.pz p{color:var(--ink-2)}
+.menu .t,.pz .tag{color:var(--paper)}
+.pizzas .btn-cream,.carta .btn-cream{background:var(--tile);color:var(--paper)}
+.pizzas .btn-cream:hover,.carta .btn-cream:hover{background:var(--ink)}
+.pz .num{background:rgba(255,252,245,.88);color:var(--ink)}
+.pz.end{background:var(--tile);color:var(--paper)}
+.pz.end p{color:var(--paper)}
+.carta .pz.end .btn-cream{background:var(--paper);color:var(--ink)}
+.progress{background:var(--line)}.progress i{background:var(--tomato)}
+.pz-frame img{transition:none}
+.pz-frame .alt{opacity:0}
+.stack .c{width:34%;aspect-ratio:3/4;right:6%;top:-4%;border:8px solid var(--paper);z-index:2}
+.local h2 em{color:var(--saffron)}
+
 @media(prefers-reduced-motion:reduce){.dot,.wave{animation:none}.js .loader{display:none}.js .big-text .fw{opacity:1}}
 </style>
 <script>document.documentElement.classList.add('js')</script>
@@ -289,18 +341,23 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
 <main id="top">
 <!-- HERO -->
 <section class="hero" aria-labelledby="h1">
-  <div class="hero-media"><img id="heroImg" src="img/fachada.jpg" alt="Fachada de Pizzería Las Cancelas en la calle San Francisco, con su mural de azulejos" fetchpriority="high"></div>
-  <div class="score" data-hero>
-    <b>4,7</b><div class="st" aria-hidden="true">★★★★★</div><small>2.211 reseñas en Google</small>
-  </div>
-  <div class="wrap">
-    <h1 id="h1" class="split">Hay cosas que no se pueden <em>imitar.</em></h1>
-    <div class="hero-foot">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1 id="h1" class="split">Hay cosas que no se pueden <em>imitar.</em></h1>
       <p data-hero><strong>La primera pizzería manchega del mundo.</strong> Pizza en bandeja metálica a 300 grados, con sabores de La Mancha, en un local chiquitito de azulejo y manteles de cuadros. En Alcázar de San Juan.</p>
       <div class="ctas" data-hero>
-        <a class="btn btn-cream" href="#carta">Ver las pizzas</a>
+        <a class="btn btn-tomato" href="#carta">Ver las pizzas</a>
         <a class="btn btn-ghost" href="tel:+34926545965">Pedir para llevar</a>
       </div>
+      <div class="score" data-hero>
+        <b>4,7</b><div><div class="st" aria-hidden="true">★★★★★</div><small>2.211 reseñas en Google</small></div>
+      </div>
+    </div>
+    <div class="hero-media hero-stack" id="heroStack">
+      <figure class="hs hs1"><img id="heroImg" src="img/pizza-mantel.jpg" alt="Pizza de Las Cancelas en bandeja sobre mantel de cuadros verdes" fetchpriority="high"></figure>
+      <figure class="hs hs2"><img src="img/mesa-pizzas.jpg" alt="Mesa con varias pizzas para compartir y mantel de cuadros verdes"></figure>
+      <figure class="hs hs3"><img src="img/cazuela.jpg" alt="Cazuela de barro gratinada servida en la mesa"></figure>
+      <span class="hero-stamp" data-hero>Bandeja · 300 °C</span>
     </div>
   </div>
 </section>
@@ -334,7 +391,7 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
 <section class="pizzas" id="carta" aria-labelledby="h2pz">
   <div class="wrap">
     <div class="pz-grid">
-      <div class="pz-photo"><div class="pz-frame"><img data-par src="img/pizza-aceitunas.jpg" alt="Pizza de Las Cancelas con aceitunas negras, en bandeja" loading="lazy"></div><span class="stamp">Bandeja · 300 °C</span></div>
+      <div class="pz-photo"><div class="pz-frame" id="pzFrame"><img data-par src="img/pizza-aceitunas.jpg" alt="Pizza de Las Cancelas con aceitunas negras, en bandeja" loading="lazy"><img class="alt" src="img/pizza-gratinada.jpg" alt="Primer plano de pizza gratinada de Las Cancelas" loading="lazy"><img class="alt" src="img/pizza-bandeja-verde.jpg" alt="Pizza de Las Cancelas en bandeja verde, cortada en porciones" loading="lazy"></div><span class="stamp">Bandeja · 300 °C</span></div>
       <div>
         <div class="kicker">Las pizzas</div>
         <h2 id="h2pz" class="split" style="margin-top:22px">Pizzas con <em>apellido</em> manchego.</h2>
@@ -365,6 +422,7 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
   </div>
   <div class="hscroll" id="hscroll">
     <div class="htrack" id="htrack">
+      <figure class="pz"><div class="ph"><img src="img/fachada.jpg" alt="Fachada de Las Cancelas con su mural de azulejos y el letrero verde" loading="lazy" style="object-position:30% 50%"><span class="num">00</span></div><figcaption><h3>La fachada</h3><p>El letrero verde de la calle San Francisco.</p></figcaption></figure>
       <figure class="pz"><div class="ph"><img src="img/comedor.jpg" alt="Comedor con mesas de manteles de cuadros verdes" loading="lazy"><span class="num">01</span></div><figcaption><h3>El comedor</h3><p>Manteles de cuadros y sillas castellanas.</p></figcaption></figure>
       <figure class="pz"><div class="ph"><img src="img/pared-ceramica.jpg" alt="Pared cubierta de platos de cerámica, escudos y objetos antiguos" loading="lazy"><span class="num">02</span></div><figcaption><h3>La pared de cerámica</h3><p>Platos, escudos y recuerdos de toda la vida.</p></figcaption></figure>
       <figure class="pz"><div class="ph"><img src="img/interior-lamparas.jpg" alt="Interior del local con lámparas de araña y juguetes colgados" loading="lazy"><span class="num">03</span></div><figcaption><h3>Mires donde mires</h3><p>Lámparas, juguetes y detalles por todas partes.</p></figcaption></figure>
@@ -388,8 +446,9 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
     <h2 id="h2del" class="split" style="margin-top:22px">Y hay <em>hueco</em> para el postre.</h2>
     <div class="del-grid">
       <div class="stack">
-        <figure class="a"><img data-par src="img/cazuela.jpg" alt="Cazuela de barro gratinada servida en la mesa" loading="lazy"><figcaption>Gratinado en cazuela</figcaption></figure>
-        <figure class="b"><img src="img/pizza-manchega.jpg" alt="Pizza de la casa recién salida del horno" loading="lazy"><figcaption>Recién salida del horno</figcaption></figure>
+        <figure class="a"><img data-par src="img/tiramisu.jpg" alt="Porción de tiramisú de la casa en plato de barro" loading="lazy"><figcaption>Tiramisú de la casa</figcaption></figure>
+        <figure class="c"><img src="img/bizcochada.jpg" alt="Bizcochada casera en plato de loza azul" loading="lazy"><figcaption>Bizcochada</figcaption></figure>
+        <figure class="b"><img src="img/arroz-con-leche.jpg" alt="Arroz con leche con canela en plato de barro" loading="lazy"><figcaption>Arroz con leche</figcaption></figure>
       </div>
       <div class="list">
         <h3>Otras delicias</h3>
@@ -569,20 +628,33 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
   const heroWords=$$('.hero h1 .w>span');
   gsap.set(heroWords,{yPercent:110});
   gsap.set('[data-hero]',{autoAlpha:0,y:24});
-  gsap.set('#heroImg',{scale:1.25});
+  const hs=$$('.hs');
+  gsap.set(hs,{yPercent:30,autoAlpha:0,rotate:i=>[-4,5,-7][i]});
   const counter={v:0};
   const intro=gsap.timeline({defaults:{ease:'expo.out'}});
   intro.to(counter,{v:300,duration:1.3,ease:'power2.inOut',onUpdate:()=>$('#ln').textContent=Math.round(counter.v)})
        .to(loader,{yPercent:-100,duration:1,ease:'expo.inOut'},'+=.15')
-       .to('#heroImg',{scale:1,duration:2.2},'<.1')
-       .to(heroWords,{yPercent:0,duration:1.3,stagger:.06},'<.35')
+       .to(hs,{yPercent:0,autoAlpha:1,rotate:i=>[-2,3,-4][i],duration:1.4,stagger:.12},'<.3')
+       .to(heroWords,{yPercent:0,duration:1.3,stagger:.06},'<.1')
        .to('[data-hero]',{autoAlpha:1,y:0,duration:1,stagger:.08},'<.4')
        .add(()=>loader.remove());
   setTimeout(()=>{if(document.body.contains(loader)) intro.progress(1);},6000);
 
-  /* hero parallax de salida */
-  gsap.to('.hero-media',{yPercent:18,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-  gsap.to('.hero .wrap',{yPercent:-25,opacity:.15,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  /* collage de la portada: cada foto a su ritmo al hacer scroll y siguiendo al ratón */
+  hs.forEach((f,i)=>gsap.to(f,{yPercent:[-8,12,-18][i],ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}}));
+  if(matchMedia('(pointer:fine)').matches){
+    const st=$('#heroStack');
+    st.addEventListener('pointermove',e=>{const r=st.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;hs.forEach((f,i)=>gsap.to(f.firstElementChild,{x:x*[18,-26,32][i],y:y*[14,-20,24][i],scale:1.06,duration:.8,ease:'power3.out'}));});
+    st.addEventListener('pointerleave',()=>hs.forEach(f=>gsap.to(f.firstElementChild,{x:0,y:0,scale:1,duration:1,ease:'power3.out'})));
+  }
+
+  /* pizzas: las fotos reales se van fundiendo en el marco */
+  const pzImgs=$$('#pzFrame img');
+  if(pzImgs.length>1){
+    const tl=gsap.timeline({repeat:-1});let z=1;
+    pzImgs.forEach((im,i)=>{const nx=pzImgs[(i+1)%pzImgs.length];tl.add(()=>{nx.style.zIndex=++z;},'+=2.6').to(nx,{opacity:1,duration:1.1,ease:'power2.inOut'}).set(im,{opacity:0});});
+    ScrollTrigger.create({trigger:'#pzFrame',start:'top bottom',end:'bottom top',onToggle:s=>s.isActive?tl.play():tl.pause()});
+  }
 
   /* nav: se esconde al bajar */
   const nav=$('#nav');let last=0;
@@ -607,6 +679,7 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
   gsap.from('.mani-photo',{clipPath:'inset(30% 15% 30% 15% round 24px)',duration:1.6,ease:'expo.out',scrollTrigger:{trigger:'.mani-photo',start:'top 80%'}});
   gsap.from('.stack .a',{clipPath:'inset(0% 0% 100% 0% round 22px)',duration:1.5,ease:'expo.inOut',scrollTrigger:{trigger:'.stack',start:'top 75%'}});
   gsap.from('.stack .b',{yPercent:40,rotate:8,autoAlpha:0,duration:1.4,ease:'expo.out',delay:.3,scrollTrigger:{trigger:'.stack',start:'top 75%'}});
+  gsap.from('.stack .c',{yPercent:-30,rotate:-8,autoAlpha:0,duration:1.4,ease:'expo.out',delay:.5,scrollTrigger:{trigger:'.stack',start:'top 75%'}});
 
   /* contadores */
   $$('[data-count]').forEach(el=>{
