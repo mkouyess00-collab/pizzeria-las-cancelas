@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tulpen+One&family=Alegreya:wght@400;500;700&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <!--
   Dirección: "Hay cosas que no se pueden imitar". Editorial manchego cálido: noche de horno (marrón tostado),
   crema de mantel, rojo tomate, azul de azulejo y azafrán. Fotos grandes de comida, motion con GSAP + ScrollTrigger,
@@ -24,10 +24,13 @@
   --saffron:#EDB04A; --saffron-lt:#F7D58C;
   --tile:#1D4F86;
   --line:rgba(36,23,15,.14); --line-lt:rgba(244,234,218,.18);
-  --serif:"Fraunces",Georgia,serif; --sans:"Instrument Sans",system-ui,sans-serif;
+  --display:"Tulpen One","Arial Narrow",sans-serif; --serif:"Alegreya",Georgia,serif; --sans:"Alegreya Sans",system-ui,sans-serif;
   --ease:cubic-bezier(.2,.7,.1,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
+/* rótulo: Tulpen One con trazo reforzado, como las letras del logo de la casa */
+h1,h2,.big-text,.giant,.loader .n,.fact b,.bigscore b,.score b,.menu h3,.pz h3,.warn p b,.logo{-webkit-text-stroke:.02em currentColor;paint-order:stroke fill}
+em{font-style:normal}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 body{background:var(--night);color:var(--cream);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -41,7 +44,7 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 /* ---------- preloader ---------- */
 .loader{position:fixed;inset:0;z-index:100;background:var(--tomato);display:none;align-items:flex-end;justify-content:space-between;padding:40px;color:var(--paper)}
 .js .loader{display:flex}
-.loader .n{font-family:var(--serif);font-weight:600;font-size:clamp(90px,18vw,260px);line-height:.8;letter-spacing:-.05em}
+.loader .n{font-family:var(--display);font-weight:400;font-size:clamp(130px,26vw,380px);line-height:.8;letter-spacing:.005em}
 .loader .n sup{font-size:.35em;vertical-align:top}
 .loader p{font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;max-width:16em;text-align:right}
 .loader .chef{position:absolute;left:50%;top:50%;width:clamp(120px,16vw,210px);color:var(--paper);translate:-50% -62%}
@@ -52,7 +55,7 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .nav.hide{transform:translateY(-100%)}
 .nav.solid{background:rgba(30,19,13,.82);backdrop-filter:blur(12px)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px}
-.logo{font-family:var(--serif);font-weight:700;font-size:23px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.logo{font-family:var(--display);font-weight:400;font-size:34px;letter-spacing:.005em;display:flex;align-items:center;gap:10px}
 .logo .chef{width:30px;color:var(--saffron);transition:transform .4s var(--ease)}
 .logo:hover .chef{transform:rotate(-10deg) scale(1.08)}
 .nav ul{display:flex;gap:34px;list-style:none;font-size:15px;font-weight:500}
@@ -70,17 +73,17 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .hero{position:relative;height:100svh;min-height:640px;overflow:hidden;display:flex;align-items:flex-end}
 .hero-media{position:absolute;inset:0;overflow:hidden}
 .hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transform-origin:center}
-.hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,19,13,.55) 0%,rgba(30,19,13,.05) 28%,rgba(30,19,13,.55) 52%,rgba(30,19,13,.96) 82%)}
+.hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,19,13,.55) 0%,rgba(30,19,13,.05) 24%,rgba(30,19,13,.72) 46%,rgba(30,19,13,.96) 78%)}
 .hero .wrap{position:relative;width:100%;padding-bottom:56px}
 .kicker{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron-lt);display:flex;align-items:center;gap:12px}
 .kicker::before{content:"";width:30px;height:1.5px;background:currentColor}
-.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(54px,9.6vw,168px);line-height:.88;letter-spacing:-.045em;margin:20px 0 0;font-variation-settings:"opsz" 144;max-width:12ch}
-.hero h1 em{font-style:italic;font-weight:300;color:var(--saffron)}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(76px,13vw,230px);line-height:.86;letter-spacing:.005em;margin:0;max-width:16ch}
+.hero h1 em{font-weight:300;color:var(--saffron)}
 .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:36px;flex-wrap:wrap}
 .hero-foot p{max-width:30em;font-size:clamp(16px,1.3vw,19px);color:rgba(244,234,218,.88)}
 .hero-foot .ctas{display:flex;gap:12px;flex-wrap:wrap}
 .score{position:absolute;right:40px;top:120px;text-align:right}
-.score b{font-family:var(--serif);font-size:64px;font-weight:500;letter-spacing:-.04em;line-height:1}
+.score b{font-family:var(--display);font-size:86px;font-weight:500;letter-spacing:.005em;line-height:1}
 .score .st{color:var(--saffron);letter-spacing:3px}
 .score small{display:block;font-size:13px;opacity:.85}
 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
@@ -99,22 +102,22 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .welcome .chef{width:clamp(96px,10vw,140px);color:var(--ink)}
 .bubble{position:relative;background:var(--paper);border-radius:28px;padding:24px 30px;font-family:var(--serif);font-size:clamp(22px,2.4vw,34px);line-height:1.15;letter-spacing:-.02em;box-shadow:0 18px 40px -22px rgba(36,23,15,.5);max-width:24ch}
 .bubble::before{content:"";position:absolute;left:-14px;top:50%;width:28px;height:28px;background:var(--paper);transform:translateY(-50%) rotate(45deg);border-radius:4px}
-.bubble em{font-style:italic;color:var(--tomato)}
+.bubble em{color:var(--tomato)}
 .welcome .sig{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-align:right;max-width:14em}
 @media(max-width:760px){.welcome .wrap{grid-template-columns:auto 1fr;gap:22px}.welcome .sig{display:none}.welcome .chef{width:80px}.bubble{padding:18px 20px}}
 
 /* ---------- manifesto ---------- */
 .manifesto{background:var(--cream);color:var(--ink);padding:clamp(100px,14vw,200px) 0}
 .manifesto .kicker{color:var(--tomato)}
-.big-text{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.6vw,72px);line-height:1.06;letter-spacing:-.03em;margin-top:34px;max-width:19ch}
+.big-text{font-family:var(--display);font-weight:400;font-size:clamp(44px,6vw,96px);line-height:1.02;letter-spacing:.005em;margin-top:34px;max-width:30ch}
 .js .big-text .fw{opacity:.16}
-.big-text em{font-style:italic;color:var(--tomato)}
+.big-text em{color:var(--tomato)}
 .mani-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:90px;align-items:end}
 .mani-photo{border-radius:24px;overflow:hidden;aspect-ratio:4/5;position:relative}
 .mani-photo img{width:100%;height:120%;object-fit:cover;position:absolute;top:-10%}
 .facts{border-top:1.5px solid var(--ink)}
 .fact{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:baseline;padding:28px 0;border-bottom:1px solid var(--line)}
-.fact b{font-family:var(--serif);font-weight:500;font-size:clamp(52px,6vw,96px);letter-spacing:-.05em;line-height:.9;min-width:3.2ch}
+.fact b{font-family:var(--display);font-weight:400;font-size:clamp(72px,8vw,130px);letter-spacing:.005em;line-height:.9;min-width:3.2ch}
 .fact b sup{font-size:.4em;color:var(--tomato);vertical-align:top;line-height:1}
 .fact>span{color:var(--ink-2);font-size:16px;max-width:22em}
 .fact>span strong{display:block;color:var(--ink);font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:4px}
@@ -132,7 +135,7 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .menu li{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:24px 0;border-bottom:1px solid var(--line-lt);transition:padding .4s var(--ease)}
 .menu li:hover{padding-left:12px}
 .menu .mn{font-family:var(--serif);font-size:16px;color:var(--saffron);padding-top:10px}
-.menu h3{font-family:var(--serif);font-weight:500;font-size:clamp(30px,3vw,44px);letter-spacing:-.03em;line-height:1.05;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.menu h3{font-family:var(--display);font-weight:400;font-size:clamp(40px,4vw,60px);letter-spacing:.005em;line-height:1.05;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .menu p{color:rgba(244,234,218,.75);margin-top:6px}
 .menu .t{font-family:var(--sans);font-style:normal;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:var(--tomato);color:var(--paper)}
 .menu .t.s{background:var(--saffron);color:var(--ink)}.menu .t.b{background:var(--tile)}
@@ -144,8 +147,8 @@ iconify-icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em}
 .carta{background:var(--night);position:relative;overflow:hidden}
 .carta-intro{padding:clamp(100px,12vw,160px) 40px 56px}
 .carta-intro .row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
-h2{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6.4vw,110px);line-height:.92;letter-spacing:-.045em;font-variation-settings:"opsz" 144}
-h2 em{font-style:italic;font-weight:300;color:var(--saffron)}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(62px,8.6vw,150px);line-height:.9;letter-spacing:.005em}
+h2 em{font-weight:300;color:var(--saffron)}
 .carta-intro p{max-width:26em;color:rgba(244,234,218,.75)}
 .hscroll{position:relative}
 .htrack{display:flex;gap:28px;padding:0 40px 120px;width:max-content}
@@ -155,7 +158,7 @@ h2 em{font-style:italic;font-weight:300;color:var(--saffron)}
 .pz .num{position:absolute;top:18px;left:20px;font-family:var(--serif);font-size:15px;background:rgba(30,19,13,.7);backdrop-filter:blur(6px);padding:6px 12px;border-radius:999px}
 .pz .tag{position:absolute;top:18px;right:20px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:999px;background:var(--tomato);color:var(--paper)}
 .pz .tag.b{background:var(--tile)}.pz .tag.s{background:var(--saffron);color:var(--ink)}
-.pz h3{font-family:var(--serif);font-weight:500;font-size:clamp(34px,3vw,46px);letter-spacing:-.03em;margin-top:22px;line-height:1}
+.pz h3{font-family:var(--display);font-weight:400;font-size:clamp(44px,4vw,62px);letter-spacing:.005em;margin-top:22px;line-height:1}
 .pz p{color:rgba(244,234,218,.75);margin-top:10px;font-size:16px;max-width:30ch}
 .pz.end{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:22px;background:var(--tomato);border-radius:26px;padding:40px;aspect-ratio:4/5;align-self:flex-start}
 .pz.end h3{margin:0;font-size:clamp(38px,3.6vw,54px)}
@@ -207,7 +210,7 @@ h2 em{font-style:italic;font-weight:300;color:var(--saffron)}
 .resenas h2 em{color:var(--tomato)}
 .rv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
 .bigscore{display:flex;align-items:center;gap:20px}
-.bigscore b{font-family:var(--serif);font-size:clamp(90px,12vw,180px);font-weight:500;letter-spacing:-.06em;line-height:.8}
+.bigscore b{font-family:var(--display);font-size:clamp(120px,16vw,240px);font-weight:500;letter-spacing:.005em;line-height:.8}
 .bigscore .st{color:#B87A12;font-size:24px;letter-spacing:3px}
 .bigscore small{display:block;color:var(--ink-2)}
 .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:80px}
@@ -220,7 +223,7 @@ h2 em{font-style:italic;font-weight:300;color:var(--saffron)}
 .q footer{margin-top:26px;font-size:14px;opacity:.85}.q:nth-child(2) footer{opacity:1}
 .warn{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;background:var(--night);color:var(--cream);border-radius:24px;padding:30px 34px}
 .warn p{font-size:17px;max-width:44em}
-.warn p b{display:block;font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:4px;color:var(--saffron)}
+.warn p b{display:block;font-family:var(--display);font-size:40px;font-weight:500;margin-bottom:4px;color:var(--saffron)}
 @media(max-width:900px){.quotes{grid-template-columns:1fr}.q{min-height:0}}
 
 /* ---------- visita ---------- */
@@ -243,7 +246,7 @@ h2 em{font-style:italic;font-weight:300;color:var(--saffron)}
 .visita .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}
 @media(max-width:900px){.visita .grid{grid-template-columns:1fr;gap:48px}}
 @media(max-width:480px){.hours div{flex-direction:column;gap:2px}}
-.giant{font-family:var(--serif);font-weight:600;font-size:clamp(60px,16.5vw,270px);letter-spacing:-.06em;line-height:.85;color:#E25A3E;white-space:nowrap;text-align:center;margin-top:120px;overflow:hidden}
+.giant{font-family:var(--display);font-weight:400;font-size:clamp(90px,24vw,400px);letter-spacing:.005em;line-height:.85;color:#E25A3E;white-space:nowrap;text-align:center;margin-top:120px;overflow:hidden}
 .giant span{display:inline-block}
 .giant-wrap{position:relative}
 .giant-wrap .chef{position:absolute;right:4%;top:-42%;width:clamp(56px,10vw,170px);color:var(--saffron)}
@@ -291,10 +294,9 @@ footer.site a{text-decoration:underline;text-underline-offset:2px}
     <b>4,7</b><div class="st" aria-hidden="true">★★★★★</div><small>2.211 reseñas en Google</small>
   </div>
   <div class="wrap">
-    <div class="kicker" data-hero>La primera pizzería manchega del mundo</div>
     <h1 id="h1" class="split">Hay cosas que no se pueden <em>imitar.</em></h1>
     <div class="hero-foot">
-      <p data-hero>Pizza en bandeja metálica a 300 grados, con sabores de La Mancha, en un local chiquitito de azulejo y manteles de cuadros. En Alcázar de San Juan.</p>
+      <p data-hero><strong>La primera pizzería manchega del mundo.</strong> Pizza en bandeja metálica a 300 grados, con sabores de La Mancha, en un local chiquitito de azulejo y manteles de cuadros. En Alcázar de San Juan.</p>
       <div class="ctas" data-hero>
         <a class="btn btn-cream" href="#carta">Ver las pizzas</a>
         <a class="btn btn-ghost" href="tel:+34926545965">Pedir para llevar</a>
